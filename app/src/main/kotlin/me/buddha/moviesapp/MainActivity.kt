@@ -4,44 +4,53 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
+import me.buddha.moviesapp.navigation.Destination
+import me.buddha.moviesapp.ui.moviedetails.MovieDetailsScreen
+import me.buddha.moviesapp.ui.moviedetails.MovieDetailsViewModel
+import me.buddha.moviesapp.ui.movielist.MovieListScreen
+import me.buddha.moviesapp.ui.movielist.MovieListViewModel
+import me.buddha.moviesapp.ui.search.SearchScreen
+import me.buddha.moviesapp.ui.search.SearchViewModel
 import me.buddha.moviesapp.ui.theme.MoviesAppTheme
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             MoviesAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                NavHost(
+                    navController = rememberNavController(),
+                    startDestination = Destination.MovieList.route
+                ) {
+                    composable(Destination.MovieList.route) {
+                        val movieListViewModel: MovieListViewModel = hiltViewModel()
+                        MovieListScreen(
+                            viewModel = movieListViewModel
+                        )
+                    }
+
+                    composable(Destination.MovieDetails.route) {
+                        val movieDetailsViewModel: MovieDetailsViewModel = hiltViewModel()
+                        MovieDetailsScreen(
+                            viewModel = movieDetailsViewModel
+                        )
+                    }
+
+                    composable(Destination.Search.route) {
+                        val searchViewModel: SearchViewModel = hiltViewModel()
+                        SearchScreen(
+                            viewModel = searchViewModel
+                        )
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MoviesAppTheme {
-        Greeting("Android")
     }
 }
