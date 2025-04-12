@@ -15,10 +15,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import me.buddha.moviesapp.R
 import me.buddha.moviesapp.data.model.Movie
 import me.buddha.moviesapp.ui.theme.MoviesAppTheme
@@ -54,7 +57,10 @@ fun MovieDetailsStateBased(
                     .clickable { onBackClick() }
             )
             AsyncImage(
-                model = posterUrl(),
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(movie.posterUrl())
+                    .crossfade(true)
+                    .build(),
                 contentDescription = title,
                 modifier = Modifier
                     .fillMaxWidth()

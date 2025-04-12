@@ -22,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,7 +36,6 @@ import coil3.compose.AsyncImage
 import kotlinx.coroutines.flow.MutableStateFlow
 import me.buddha.moviesapp.R
 import me.buddha.moviesapp.data.model.Movie
-import me.buddha.moviesapp.domain.Constants
 import me.buddha.moviesapp.ui.common.ErrorScreen
 import me.buddha.moviesapp.ui.common.ShimmerLoadingBox
 import me.buddha.moviesapp.ui.theme.MoviesAppTheme
@@ -147,9 +148,11 @@ fun MovieItem(
             .clickable { onClick() }
     ) {
         AsyncImage(
-            model = Constants.BASE_IMAGE_URL + movie.posterPath,
+            model = movie.posterUrl(),
             contentDescription = movie.title,
-            modifier = Modifier.size(160.dp)
+            modifier = Modifier.size(160.dp),
+            contentScale = ContentScale.Crop,
+            placeholder = painterResource(R.drawable.movie_placeholder)
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
