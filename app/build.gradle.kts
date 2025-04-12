@@ -71,6 +71,7 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
+    implementation(libs.androidx.room.paging)
 
     // Compose Navigation
     implementation(libs.navigation.compose)
@@ -81,4 +82,8 @@ dependencies {
     // Gson
     implementation(libs.gson)
     implementation(libs.retrofit.gson)
+
+    // Paging
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.androidx.paging.compose)
 }

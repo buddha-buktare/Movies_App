@@ -4,7 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import me.buddha.moviesapp.data.remote.MoviesApi
+import me.buddha.moviesapp.data.remote.MovieApi
 import me.buddha.moviesapp.domain.Constants
 import me.buddha.moviesapp.navigation.DefaultNavigator
 import me.buddha.moviesapp.navigation.Destination
@@ -32,5 +32,5 @@ class AppModule {
     @Singleton
     fun provideApiService(
         retrofit: Retrofit
-    ) = retrofit.create(MoviesApi::class.java)
+    ) = retrofit.create(MovieApi::class.java)
  }
