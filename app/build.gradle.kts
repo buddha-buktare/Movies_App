@@ -74,4 +74,11 @@ dependencies {
 
     // Compose Navigation
     implementation(libs.navigation.compose)
+
+    // Retrofit
+    implementation(libs.retrofit)
+
+    // Gson
+    implementation(libs.gson)
+    implementation(libs.retrofit.gson)
 }
