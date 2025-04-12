@@ -24,15 +24,13 @@ class MovieDataSourceImpl @Inject constructor(
 
     override fun getPopularMovies(): Flow<PagingData<Movie>> {
 
-        val pagingSourceFactory = { movieDb.moviesDao().getAllMovies() }
-
         return Pager(
             config = PagingConfig(pageSize = 20),
             remoteMediator = MovieRemoteMediator(
                 movieApi = movieApi,
                 movieDb = movieDb,
             ),
-            pagingSourceFactory = pagingSourceFactory
+            pagingSourceFactory = { movieDb.moviesDao().getAllMovies() }
         ).flow.map { pagingData ->
             pagingData.map { it.toMovie() }
         }

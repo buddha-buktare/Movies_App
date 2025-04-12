@@ -9,7 +9,7 @@ fun MovieDto.toMovie(): Movie {
         id = id,
         title = title,
         overview = overview,
-        posterPath = posterPath
+        posterPath = posterPath,
     )
 }
 

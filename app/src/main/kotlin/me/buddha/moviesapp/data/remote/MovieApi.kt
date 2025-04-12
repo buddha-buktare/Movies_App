@@ -9,14 +9,14 @@ interface MovieApi {
 
     @GET("movie/popular")
     suspend fun getPopularMovies(
+        @Query("page") page: Int,
         @Query("api_key") apiKey: String = Constants.API_KEY,
-        @Query("page") page: Int
     ): MovieResponseDto
 
     @GET("search/movie")
     suspend fun searchMovies(
-        @Query("api_key") apiKey: String = Constants.API_KEY,
         @Query("query") query: String,
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("api_key") apiKey: String = Constants.API_KEY,
     ): MovieResponseDto
 }

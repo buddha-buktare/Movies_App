@@ -1,8 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.kotlinAndroidKsp)
     alias(libs.plugins.hiltAndroid)
+    alias(libs.plugins.compose.compiler)
+    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
@@ -42,7 +43,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.6.1"
     }
     packaging {
         resources {
@@ -64,13 +65,14 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt.core)
-    ksp(libs.hilt.compiler)
+    debugImplementation(libs.ui.tooling)
+    kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 
     // Room
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
-    ksp(libs.room.compiler)
+    kapt(libs.room.compiler)
     implementation(libs.androidx.room.paging)
 
     // Compose Navigation
@@ -90,4 +92,7 @@ dependencies {
     // OkHttp for logging
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
+
+    // Coil
+    implementation(libs.coil.compose)
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.compose.LazyPagingItems
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import me.buddha.moviesapp.data.model.Movie
@@ -30,4 +31,10 @@ class MovieListViewModel @Inject constructor(
     private fun getMovies() {
         popularMovies = movieUseCase.getPopularMoviesUseCase().cachedIn(viewModelScope)
     }
+}
+
+sealed class MovieUiState {
+    object Loading : MovieUiState()
+    data class Success(val movies: LazyPagingItems<Movie>) : MovieUiState()
+    data class Error(val message: String) : MovieUiState()
 }

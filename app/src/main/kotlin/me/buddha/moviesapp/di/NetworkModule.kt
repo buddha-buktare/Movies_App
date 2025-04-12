@@ -40,6 +40,7 @@ abstract class NetworkModule {
         @Singleton
         fun provideRetrofit() = Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
+            .client(provideOkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -47,7 +48,7 @@ abstract class NetworkModule {
         @Singleton
         fun provideApiService(
             retrofit: Retrofit
-        ) = retrofit.create(MovieApi::class.java)
+        ): MovieApi = retrofit.create(MovieApi::class.java)
 
         @Provides
         @Singleton
