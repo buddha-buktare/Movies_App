@@ -7,8 +7,10 @@ import androidx.paging.cachedIn
 import androidx.paging.compose.LazyPagingItems
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import me.buddha.moviesapp.data.model.Movie
 import me.buddha.moviesapp.domain.usecase.MovieUseCase
+import me.buddha.moviesapp.navigation.Destination
 import me.buddha.moviesapp.navigation.Navigator
 import javax.inject.Inject
 
@@ -30,6 +32,18 @@ class MovieListViewModel @Inject constructor(
 
     private fun getMovies() {
         popularMovies = movieUseCase.getPopularMoviesUseCase().cachedIn(viewModelScope)
+    }
+
+    fun navigateToSearch() {
+        viewModelScope.launch {
+            navigator.navigate(Destination.Search.route)
+        }
+    }
+
+    fun navigateToDetails(movie: Movie) {
+        viewModelScope.launch {
+            navigator.navigate(Destination.MovieDetails(movie))
+        }
     }
 }
 

@@ -15,5 +15,5 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideNavigator(): Navigator = DefaultNavigator(startDestination = Destination.MovieList)
+    fun provideNavigator(): Navigator = DefaultNavigator(startDestination = Destination.MovieList.route)
  }

@@ -74,8 +74,8 @@ fun MovieListScreen(
         is MovieUiState.Success -> {
             MovieList(
                 movies = uiState.movies,
-                navigateToSearch = {},
-                navigateToDetails = {}
+                navigateToSearch = { viewModel.navigateToSearch() },
+                navigateToDetails = { movie -> viewModel.navigateToDetails(movie) }
             )
         }
     }

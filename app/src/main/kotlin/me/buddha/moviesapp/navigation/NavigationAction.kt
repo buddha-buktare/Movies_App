@@ -5,7 +5,7 @@ import androidx.navigation.NavOptionsBuilder
 sealed interface NavigationAction {
 
     data class Navigate(
-        val destination: Destination,
+        val destination: String,
         val navOptions: NavOptionsBuilder.() -> Unit = {}
     ) : NavigationAction
 

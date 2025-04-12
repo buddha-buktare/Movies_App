@@ -9,11 +9,11 @@ import me.buddha.moviesapp.navigation.NavigationAction.NavigateUp
 
 interface Navigator {
 
-    val startDestination: Destination
+    val startDestination: String
     val navigationActions: Flow<NavigationAction>
 
     suspend fun navigate(
-        destination: Destination,
+        destination: String,
         navOptions: NavOptionsBuilder.() -> Unit = {}
     )
 
@@ -21,13 +21,13 @@ interface Navigator {
 }
 
 class DefaultNavigator(
-    override val startDestination: Destination
+    override val startDestination: String
 ) : Navigator {
     private val _navigationActions = Channel<NavigationAction>()
     override val navigationActions = _navigationActions.receiveAsFlow()
 
     override suspend fun navigate(
-        destination: Destination,
+        destination: String,
         navOptions: NavOptionsBuilder.() -> Unit
     ) {
         _navigationActions.send(
