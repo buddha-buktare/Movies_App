@@ -266,13 +266,13 @@ private fun SearchInputField(
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun SearchScreenStatePreview() {
     MoviesAppTheme {
         SearchScreenState(
             fakeMoviePagingItems(),
-            "sada",
+            "Mov",
             {},
             {},
             {}
