@@ -23,7 +23,6 @@ class MovieDataSourceImpl @Inject constructor(
 ) : MovieDataSource {
 
     override fun getPopularMovies(): Flow<PagingData<Movie>> {
-
         return Pager(
             config = PagingConfig(pageSize = 20),
             remoteMediator = MovieRemoteMediator(

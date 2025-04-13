@@ -1,6 +1,7 @@
 package me.buddha.moviesapp.ui.search
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -19,12 +20,15 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -43,7 +47,6 @@ import me.buddha.moviesapp.ui.theme.MoviesAppTheme
 
 @Composable
 fun SearchScreen(
-    modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel()
 ) {
     val searchResults = viewModel.movies.collectAsLazyPagingItems()
@@ -69,6 +72,7 @@ fun SearchScreenState(
     val isEmptyQuery = query.isBlank()
     val isEmptyResult = searchResults.itemCount == 0 && searchResults.loadState.refresh is LoadState.NotLoading
     val isError = searchResults.loadState.refresh is LoadState.Error
+    val isLoading = searchResults.loadState.refresh is LoadState.Loading
 
     Column(
         modifier = Modifier
@@ -111,6 +115,11 @@ fun SearchScreenState(
                     )
                 }
 
+                isLoading -> {
+                    // Loading State
+                    SearchShimmer()
+                }
+
                 else -> {
                     LazyColumn(
                         modifier = Modifier.fillMaxWidth()
@@ -122,6 +131,7 @@ fun SearchScreenState(
                                     movie = currentMovie,
                                     onClick = { navigateToMovieDetails(currentMovie) }
                                 )
+                                Spacer(modifier = Modifier.height(10.dp))
                             }
                         }
                     }
@@ -132,35 +142,79 @@ fun SearchScreenState(
 }
 
 @Composable
+fun SearchShimmer() {
+    Column(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        repeat(10) {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                ShimmerLoadingBox(
+                    modifier = Modifier.size(60.dp)
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                ShimmerLoadingBox(
+                    modifier = Modifier
+                        .height(30.dp)
+                        .fillMaxWidth()
+                )
+            }
+        }
+    }
+}
+
+@Composable
 private fun MovieItem(
     movie: Movie,
     onClick: () -> Unit
 ) {
-   Row(
-       modifier = Modifier.fillMaxWidth().clickable { onClick() },
-       // verticalAlignment = ,
-   ) {
-       GlideImage(
-           imageModel = { movie.posterUrl() },
-           modifier = Modifier.size(60.dp),
-           loading = {
-               ShimmerLoadingBox(
-                   modifier = Modifier.size(60.dp)
-               )
-           },
-           failure = {
-               Image(
-                   painter = painterResource(R.drawable.movie_placeholder),
-                   contentDescription = "Placeholder",
-                   modifier = Modifier.size(200.dp)
-               )
-           }
-       )
-       Spacer(modifier = Modifier.width(10.dp))
-       Text(
-           text = movie.title
-       )
-   }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(2.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            GlideImage(
+                imageModel = { movie.posterUrl() },
+                modifier = Modifier
+                    .size(60.dp)
+                    .clip(RoundedCornerShape(12.dp)),
+                loading = {
+                    ShimmerLoadingBox(
+                        modifier = Modifier.size(60.dp)
+                    )
+                },
+                failure = {
+                    Image(
+                        painter = painterResource(R.drawable.movie_placeholder),
+                        contentDescription = "Placeholder",
+                        modifier = Modifier.size(200.dp)
+                    )
+                }
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            Text(
+                text = movie.title,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+        Spacer(
+            modifier = Modifier
+                .height(1.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 4.dp)
+                .clip(RoundedCornerShape(12.dp))
+                .background(Color.LightGray)
+        )
+    }
 }
 
 @Composable
@@ -185,22 +239,30 @@ private fun SearchInputField(
                 AsyncImage(
                     model = R.drawable.ic_close,
                     contentDescription = "Search Icon",
-                    modifier = Modifier.size(24.dp).clickable { clearQuery() },
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable { clearQuery() },
                     colorFilter = ColorFilter.tint(Color.Gray)
                 )
             }
         },
         placeholder = {
-            Text(text = "Search movies")
+            Text(
+                text = "Search movies",
+                color = Color.Gray
+            )
         },
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(10.dp))
             .border(
                 width = 1.dp,
                 color = Color.Gray,
                 shape = RoundedCornerShape(10.dp)
             )
+            .clip(RoundedCornerShape(10.dp)),
+        textStyle = TextStyle.Default.copy(
+            color = Color.Black
+        )
     )
 }
 

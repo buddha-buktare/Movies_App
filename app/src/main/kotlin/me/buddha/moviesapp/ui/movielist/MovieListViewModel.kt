@@ -20,10 +20,6 @@ class MovieListViewModel @Inject constructor(
     private val navigator: Navigator
 ): ViewModel() {
 
-    companion object {
-        const val TAG = "MovieListViewModel"
-    }
-
     lateinit var popularMovies: Flow<PagingData<Movie>>
 
     init {

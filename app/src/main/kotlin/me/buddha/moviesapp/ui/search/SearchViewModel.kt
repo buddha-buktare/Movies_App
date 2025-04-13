@@ -30,10 +30,6 @@ class SearchViewModel @Inject constructor(
     private val navigator: Navigator
 ): ViewModel() {
 
-    companion object {
-        const val TAG = "SearchViewModel"
-    }
-
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
@@ -67,7 +63,7 @@ class SearchViewModel @Inject constructor(
             navigator.navigate(
                 destination = Destination.MovieDetails(movie),
                 navOptions = {
-                    popUpTo(Destination.MovieDetails(movie)) {
+                    popUpTo(Destination.Search.route) {
                         inclusive = true
                     }
                 }

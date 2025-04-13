@@ -24,9 +24,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.PagingData
@@ -43,7 +46,6 @@ import me.buddha.moviesapp.ui.theme.MoviesAppTheme
 
 @Composable
 fun MovieListScreen(
-    modifier: Modifier = Modifier,
     viewModel: MovieListViewModel = hiltViewModel(),
 ) {
     val pagingData = viewModel.popularMovies.collectAsLazyPagingItems()
@@ -117,7 +119,9 @@ fun MovieList(
                 is LoadState.Loading -> {
                     item {
                         CircularProgressIndicator(
-                            modifier = Modifier.fillMaxWidth().padding(16.dp)
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
                         )
                     }
                 }
@@ -150,7 +154,9 @@ private fun MovieItem(
     ) {
         GlideImage(
             imageModel = { movie.posterUrl() },
-            modifier = Modifier.size(200.dp),
+            modifier = Modifier
+                .size(200.dp)
+                .clip(RoundedCornerShape(12.dp)),
             loading = {
                 ShimmerLoadingBox(
                     modifier = Modifier.size(200.dp)
@@ -160,13 +166,20 @@ private fun MovieItem(
                 Image(
                     painter = painterResource(R.drawable.movie_placeholder),
                     contentDescription = "Placeholder",
-                    modifier = Modifier.size(200.dp)
+                    modifier = Modifier
+                        .size(200.dp)
+                        .clip(RoundedCornerShape(12.dp))
                 )
             }
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
-            text = movie.title
+            text = movie.title,
+            style = TextStyle.Default.copy(
+                fontSize = 20.sp
+            ),
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }
@@ -213,7 +226,10 @@ private fun SearchBox(
             )
         },
         placeholder = {
-            Text(text = "Search movies")
+            Text(
+                text = "Search movies",
+                color = Color.Gray
+            )
         },
         modifier = Modifier
             .fillMaxWidth()

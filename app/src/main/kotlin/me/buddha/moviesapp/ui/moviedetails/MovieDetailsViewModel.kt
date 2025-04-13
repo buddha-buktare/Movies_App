@@ -13,9 +13,6 @@ class MovieDetailsViewModel @Inject constructor(
     private val navigator: Navigator
 ): ViewModel() {
 
-    companion object {
-        const val TAG = "MovieDetailsViewModel"
-    }
     var movie: Movie? = null
 
     fun onBackClick() {
