@@ -28,7 +28,7 @@ fun ErrorScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Something went wrong.\nPlease try again.",
+            text = "Something went wrong.\nPlease check internet and try again.",
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(20.dp))
