@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,6 +34,8 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import kotlinx.coroutines.flow.MutableStateFlow
 import me.buddha.moviesapp.R
 import me.buddha.moviesapp.data.model.Movie
@@ -138,7 +141,7 @@ fun MovieList(
 }
 
 @Composable
-fun MovieItem(
+private fun MovieItem(
     movie: Movie,
     onClick: () -> Unit,
 ) {
@@ -148,7 +151,10 @@ fun MovieItem(
             .clickable { onClick() }
     ) {
         AsyncImage(
-            model = movie.posterUrl(),
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(movie.posterUrl())
+                .crossfade(true)
+                .build(),
             contentDescription = movie.title,
             modifier = Modifier.size(160.dp),
             contentScale = ContentScale.Crop,
