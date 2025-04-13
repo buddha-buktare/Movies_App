@@ -1,5 +1,6 @@
 package me.buddha.moviesapp.ui.search
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -22,8 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,11 +33,11 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil3.compose.AsyncImage
-import coil3.request.ImageRequest
-import coil3.request.crossfade
+import com.skydoves.landscapist.glide.GlideImage
 import me.buddha.moviesapp.R
 import me.buddha.moviesapp.data.model.Movie
 import me.buddha.moviesapp.ui.common.ErrorScreen
+import me.buddha.moviesapp.ui.common.ShimmerLoadingBox
 import me.buddha.moviesapp.ui.movielist.fakeMoviePagingItems
 import me.buddha.moviesapp.ui.theme.MoviesAppTheme
 
@@ -141,15 +140,21 @@ private fun MovieItem(
        modifier = Modifier.fillMaxWidth().clickable { onClick() },
        // verticalAlignment = ,
    ) {
-       AsyncImage(
-           model = ImageRequest.Builder(LocalContext.current)
-               .data(movie.posterUrl())
-               .crossfade(true)
-               .build(),
-           contentDescription = movie.title,
+       GlideImage(
+           imageModel = { movie.posterUrl() },
            modifier = Modifier.size(60.dp),
-           contentScale = ContentScale.Crop,
-           placeholder = painterResource(R.drawable.movie_placeholder)
+           loading = {
+               ShimmerLoadingBox(
+                   modifier = Modifier.size(60.dp)
+               )
+           },
+           failure = {
+               Image(
+                   painter = painterResource(R.drawable.movie_placeholder),
+                   contentDescription = "Placeholder",
+                   modifier = Modifier.size(200.dp)
+               )
+           }
        )
        Spacer(modifier = Modifier.width(10.dp))
        Text(

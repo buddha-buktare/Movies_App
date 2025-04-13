@@ -1,29 +1,27 @@
 package me.buddha.moviesapp.ui.moviedetails
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.AsyncImage
-import coil3.request.ImageRequest
-import coil3.request.crossfade
+import com.skydoves.landscapist.glide.GlideImage
 import me.buddha.moviesapp.R
 import me.buddha.moviesapp.data.model.Movie
+import me.buddha.moviesapp.ui.common.ShimmerLoadingBox
 import me.buddha.moviesapp.ui.theme.MoviesAppTheme
 
 @Composable
@@ -56,16 +54,21 @@ fun MovieDetailsStateBased(
                     .size(24.dp)
                     .clickable { onBackClick() }
             )
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(movie.posterUrl())
-                    .crossfade(true)
-                    .build(),
-                contentDescription = title,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(300.dp)
-                    .clip(RoundedCornerShape(12.dp))
+            GlideImage(
+                imageModel = { movie.posterUrl() },
+                modifier = Modifier.size(200.dp),
+                loading = {
+                    ShimmerLoadingBox(
+                        modifier = Modifier.size(200.dp)
+                    )
+                },
+                failure = {
+                    Image(
+                        painter = painterResource(R.drawable.movie_placeholder),
+                        contentDescription = "Placeholder",
+                        modifier = Modifier.size(200.dp)
+                    )
+                }
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = title)
