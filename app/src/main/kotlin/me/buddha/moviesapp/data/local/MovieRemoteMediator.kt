@@ -28,7 +28,7 @@ class MovieRemoteMediator @Inject constructor(
             movieDb.remoteKeyDao().getKeyByMovie("popular_movies")
         } ?: return InitializeAction.LAUNCH_INITIAL_REFRESH
 
-        val cacheTimeout = TimeUnit.HOURS.convert(1, TimeUnit.MILLISECONDS)
+        val cacheTimeout = TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS)
 
         return if((System.currentTimeMillis() - remoteKey.last_updated) >= cacheTimeout) {
             InitializeAction.SKIP_INITIAL_REFRESH
