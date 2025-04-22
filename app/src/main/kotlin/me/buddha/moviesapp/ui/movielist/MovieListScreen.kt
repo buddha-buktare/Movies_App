@@ -65,7 +65,7 @@ fun MovieListScreen(
 
     when (uiState) {
         is MovieUiState.Loading -> {
-            MovieListShimmer() // Your shimmer component
+            MovieListShimmer()
         }
 
         is MovieUiState.Error -> {
