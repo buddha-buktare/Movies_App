@@ -30,7 +30,7 @@ class MovieRemoteMediator @Inject constructor(
 
         val cacheTimeout = TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS)
 
-        return if((System.currentTimeMillis() - remoteKey.last_updated) >= cacheTimeout) {
+        return if((System.currentTimeMillis() - remoteKey.lastUpdated) < cacheTimeout) {
             InitializeAction.SKIP_INITIAL_REFRESH
         } else {
             InitializeAction.LAUNCH_INITIAL_REFRESH
@@ -52,11 +52,11 @@ class MovieRemoteMediator @Inject constructor(
                         movieDb.remoteKeyDao().getKeyByMovie("popular_movies")
                     } ?: return MediatorResult.Success(true)
 
-                    if (remoteKey.next_page == null) {
+                    if (remoteKey.nextPage == null) {
                         return MediatorResult.Success(true)
                     }
 
-                    remoteKey.next_page
+                    remoteKey.nextPage
                 }
             }
 
@@ -76,8 +76,8 @@ class MovieRemoteMediator @Inject constructor(
                 movieDb.remoteKeyDao().insertKey(
                     RemoteKey(
                         id = "popular_movies",
-                        next_page = nextPage,
-                        last_updated = System.currentTimeMillis()
+                        nextPage = nextPage,
+                        lastUpdated = System.currentTimeMillis()
                     )
                 )
                 movieDb.moviesDao().insertAll(movies)

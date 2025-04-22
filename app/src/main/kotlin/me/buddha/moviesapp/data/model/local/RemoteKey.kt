@@ -9,6 +9,6 @@ import androidx.room.PrimaryKey
 data class RemoteKey(
     @PrimaryKey(autoGenerate = false)
     val id: String,
-    val next_page: Int?,
-    val last_updated: Long
+    val nextPage: Int?,
+    val lastUpdated: Long
 )
